@@ -1,0 +1,13 @@
+.container {
+    width:600px;
+    height: 400px;
+    margin:100px auto;
+    position: relative;
+    border:1px solid #aaa;
+}
+#myConvas {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    /* margin:100px 100px; */
+}
