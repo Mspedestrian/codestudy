@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/assets/waifu.css" />
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/APlayer.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/dplayer@1.24.0/dist/DPlayer.min.css">
+     
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    
+</head>
+<body>
+    <div class="hover-back"></div>
+    <header>
+        <ul class="menu">
+            <li>  主页</li>
+            <li>相册</li>
+            <li>说说</li>
+            <li>日志</li>
+            <li><a href="/upload-img/index.html">项目</a></li>
+        </ul>
+    </header>
+
+    <div id="aplayer"></div>
+    <div id="dplayer"></div>
+    <div class="waifu">
+        <div class="waifu-tips"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="waifu-tool">
+            <span class="fui-home"></span>
+            <span class="fui-chat"></span>
+            <span class="fui-eye"></span>
+            <span class="fui-user"></span>
+            <span class="fui-photo"></span>
+            <span class="fui-info-circle"></span>
+            <span class="fui-cross"></span>
+        </div>
+    </div>
+
+
+    
+    <script src="/assets/waifu-tips.js"></script>
+    <script src="/assets/live2d.js"></script>
+    <script type="text/javascript">initModel("/assets/")</script>
+    <script src="/assets/APlayer.min.js"></script>
+    <script src="https://unpkg.com/dplayer@1.24.0/dist/DPlayer.min.js"></script>
+    <script src="main.js"></script>
+    
+    <script  type="text/javascript">
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            audio: [{
+                name: 'name',
+                artist: 'artist',
+                url: '',
+                cover: '/assets/video-hover.jpg'
+            }]
+        });
+        const dp = new DPlayer({
+            container: document.getElementById('dplayer'),
+            screenshot: true,
+            video: {
+                url: '',
+                pic: '/assets/video-hover.jpg',
+                thumbnails: '/assets/video-hover.jpg'
+            },
+            // subtitle: {
+            //     url: 'webvtt.vtt'
+            // },
+            danmaku: {
+                // id: 'demo',
+                // api: 'https://api.prprpr.me/dplayer3/'
+                // addition: ['https://api.prprpr.me/dplayer3/v2/bilibili?aid=av6235951']
+            }
+        });
+    </script>
+</body>
+</html>

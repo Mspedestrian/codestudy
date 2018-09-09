@@ -11,10 +11,18 @@
     <div class="container">
         <div class="item">
             <div class="left">
-                <canvas id="sourceCanvas"></canvas>
-                <button class="select-btn btn">选择图片</button>
+                <canvas id="sourceCanvas" width="320" height="320" style="border:1px solid #ff7800"></canvas>
                 <input type="file" name="imgFile" id="imgFile" style="display: none">
-                <button class="upload-btn btn">上传图片</button>
+                
+                <div class="size-opt">
+                    <button class="big-opt">放大</button>
+                    <button class="small-opt">缩小</button>
+                </div>
+                <div>
+                    <button class="select-btn btn">选择图片</button>
+                    <button class="upload-btn btn">上传图片</button>
+                </div>
+                
             </div>
             <div class="right">
                 <canvas class="endimg" id="endCanvas" width=""></canvas>
@@ -22,5 +30,5 @@
         </div>
     </div>
 </body>
-<script src="script.js"></script>
+<script src="script2.js"></script>
 </html>

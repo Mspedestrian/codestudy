@@ -1,0 +1,40 @@
+<!-- 参考https://blog.csdn.net/fengyinchao/article/details/52382913 -->
+    <template>
+        <button>点我</button>
+    </template>
+    <script>
+        (function(){
+            
+            
+            // get content of template
+            let content = document.currentScript.ownerDocument.querySelector('template').content;
+            
+            
+            // let element register html element hello-world
+            document.registerElement('hello-world',{
+                // create elementhtml object
+                prototype: Object.create(HTMLButtonElement.prototype,{
+                    // object created finish callback
+                    createdCallback: {
+                        value:function(){
+                            // // crater current object shadow dom
+                            // let shadowDom = this.createShadowRoot();
+
+                            // // get dom node object
+                            // let clone = document.importNode(content, true);
+                            // // append node
+                            // shadowDom.appendChild(clone)
+                            this.innerHTML = '<button>hello world</button>'
+                            this.addEventListener('click', () => {
+                                alert('hello world')
+                            })
+
+                        }
+                        
+                    },
+                }),
+                extends: 'button'
+            })
+
+        })()
+    </script>
