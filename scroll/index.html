@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin:0;
+            padding: 0;
+        }
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body { 
+            margin:0;
+            padding:0;
+            perspective: 1px;
+            /* perspective-origin: 0% 0%; */
+            transform-style: preserve-3d;
+            /* transform-style: flat; */
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            backface-visibility:hidden;
+        }
+        h1 {
+            width: 100%;
+            height: 100vh;
+            line-height: 100vh;
+            text-align: center;
+        }
+        .slide {
+            /* transform-style: inherit; */
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+   
+        .slide1 {
+            background-image: url("https://lorempixel.com/640/480/abstract/6/");
+            z-index:2;
+            background-size: 100% 100%;
+        }
+        
+        .slide1 h1 {
+
+            /* transform: translateZ(.25px) scale(.75); */
+            transform: translateZ(.3px)
+            /* transform-origin: 50% 100%; */
+
+        }
+
+        .slide2 {
+            width: 100%;
+            height: 100vh;
+            background: orange;
+            z-index: 2;
+        }
+        .slide3{
+            width: 100%;
+            height: 100vh;
+            background: blue;
+            
+        }
+        
+        .slide4 {
+            width: 100%;
+            height: 100vh;
+            background: red;
+            transform: translateZ(-1px) scale(2);
+            /* z-index: 2; */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide slide1">
+        <h1>slide1</h1>
+    </div>
+    <div class="slide slide2">
+        <h1>slide2</h1>
+    </div>
+    <div class="slide slide3">
+        <h1>slide3</h1>
+    </div>
+    <div class="slide slide4">
+        <h1>slide4</h1>
+    </div>
+</body>
+</html>

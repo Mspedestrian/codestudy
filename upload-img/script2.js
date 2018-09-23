@@ -18,7 +18,8 @@ window.onload = function () {
     let setpixcel = 1;
     let setHeight = 200, setWidth = 200;
     let sourceImg;
-
+    let endData;
+    let pixcel;
     
 
 
@@ -32,8 +33,6 @@ window.onload = function () {
         setHeight = 200;
         setWidth = 200 * setpixcel;
     }
-    let pixcel;
-    let sourceImgData;
     selectBtn.addEventListener('click', function (e) {
         input.click(function () {
 
@@ -51,71 +50,64 @@ window.onload = function () {
             sourceImg.src = e.target.result;
         }
         sourceImg.onload = () => {
-            // sourceCanvas.width = sourceImg.width;
-            // sourceCanvas.height = sourceImg.height;
             if(SW<SH){
                 pixcel = Math.round(SW / sourceImg.width * 100) / 100;
             }
             else {
                 pixcel = Math.round(SH / sourceImg.height * 100) / 100;
             }
-            
-            sourceImgData = sourceImg;
-            sourceCtx.drawImage(sourceImg, 0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel)
-            let imgData = sourceCtx.getImageData(0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel);
-            
-            sourceCtx.fillStyle = "rgba(0,0,0,0.6)"
-            // sourceCtx.fillStyle = "blue"
-            sourceCtx.fillRect(0, 0, (SW-setWidth)/2, SH);
-            // sourceCtx.fillStyle = "yellow"
-            sourceCtx.fillRect((SW - setWidth) / 2, 0, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
-            // sourceCtx.fillStyle = "red"
-            sourceCtx.fillRect((SW - setWidth) / 2, setHeight + (SH - setHeight) / 2, setWidth + (SW - setWidth) / 2, (SH-setHeight)/2);
-            // sourceCtx.fillStyle = "ORANGE"
-            sourceCtx.fillRect(setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2, (SW - setWidth) / 2, setHeight);
-            console.log(sourceCanvas.height)
+            drawImageToSourceCtx();
+            drawImageToEndCtx()
         }
 
     }, false)
-    let startX, startY, drug = false;
+    let startX, startY, startEX =0,startEY = 0,drug = false;
+    let currentScale = 1;
     sourceCanvas.addEventListener('mousedown', function (e) {
         // console.log(e)
         startX = e.layerX;
         startY = e.layerY;
         drug = true;
+        // drawImageToSourceCtx(-startEX, -startEY)
+        drawImageToSourceCtx(-startEX, -startEY, SW / currentScale, SH / currentScale, 0, 0, sourceImg.width * currentScale, sourceImg.height * currentScale)
         // sourceCtx.fillStyle = "rgba(0,0,0,0.6)"
         // sourceCtx.strokeRect(0, 0, sourceCanvas.width, sourceCanvas.height);
     })
     sourceCanvas.addEventListener('mousemove', function (e) {
-        let width = e.layerX - startX;
-        let height = e.layerY - startY;
+        let width = e.layerX - startX + startEX;
+        let height = e.layerY - startY + startEY;
 
         if (drug) {
             // 移动图片的位置
-            sourceImgData = sourceImg;
-            sourceCtx.drawImage(sourceImg, 50, 50, sourceImg.width, sourceImg.height, 0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel)
-            let imgData = sourceCtx.getImageData(0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel);
-
-            sourceCtx.fillStyle = "rgba(0,0,0,0.6)"
-            // sourceCtx.fillStyle = "blue"
-            sourceCtx.fillRect(0, 0, (SW - setWidth) / 2, SH);
-            // sourceCtx.fillStyle = "yellow"
-            sourceCtx.fillRect((SW - setWidth) / 2, 0, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
-            // sourceCtx.fillStyle = "red"
-            sourceCtx.fillRect((SW - setWidth) / 2, setHeight + (SH - setHeight) / 2, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
-            // sourceCtx.fillStyle = "ORANGE"
-            sourceCtx.fillRect(setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2, (SW - setWidth) / 2, setHeight);
-            console.log(sourceCanvas.height)
+            drawImageToSourceCtx(-width, -height, SW / currentScale, SH / currentScale, 0, 0, sourceImg.width * currentScale, sourceImg.height * currentScale)
+            drawImageToEndCtx()
+         
         }
     })
     sourceCanvas.addEventListener('mouseup', function (e) {
         drug = false;
         // let endpix = MAT((e.layerX - startX)/EW*100)
-        endCtx.clearRect(0, 0, endCanvas.width, endCanvas.height);
-        let endData = sourceCtx.getImageData(startX, startY, e.layerX - startX, e.layerY - startY);
-        endCtx.putImageData(endData, 0, 0)
+        startEX += e.layerX - startX;
+        startEY += e.layerY - startY;
+   
+        drawImageToEndCtx()
+        
     })
-
+    
+    bigOpt.addEventListener('click',function(e){
+        currentScale = currentScale+0.4
+        sourceCtx.clearRect(0, 0, SW * currentScale, SH * currentScale);
+        // sourceCtx.scale(currentScale, currentScale);
+        // sx, sy, swidth, sheight, x, y, swidth, sheight
+        drawImageToSourceCtx(-startEX, -startEY, SW / currentScale, SH / currentScale, 0, 0, sourceImg.width * currentScale, sourceImg.height * currentScale)
+    })
+    smallOpt.addEventListener('click',function(e){
+        currentScale = currentScale - 0.4
+        sourceCtx.clearRect(0, 0, SW * currentScale, SH * currentScale);
+        // sourceCtx.scale(currentScale, currentScale);
+        // sx, sy, swidth, sheight, x, y, swidth, sheight
+        drawImageToSourceCtx(-startEX, -startEY, SW / currentScale, SH / currentScale, 0, 0, sourceImg.width * currentScale, sourceImg.height * currentScale)
+    })
     uploadBtn.addEventListener('click', function () {
         // loading show
         // loading.show();
@@ -124,19 +116,12 @@ window.onload = function () {
     })
 
 
-    bigOpt.addEventListener('click',function(){
-        // sourceCtx.scale(2, 2);
 
-
-        // pixcel = Math.round(SW / sourceImg.width * 100) / 100 *2;
-        pixcel++;
-        // if (pixcel > Math.round(SW / sourceImg.width * 100) / 100*5) {
-        //     return;
-        // }
-        sourceImgData = sourceImg;
-        sourceCtx.drawImage(sourceImg, 0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel)
-        let imgData = sourceCtx.getImageData(0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel);
-
+    function drawImageToSourceCtx(sx = 0, sy = 0, swidth = SW, sheight = SH, x = 0, y = 0, width = sourceImg.width, height = sourceImg.height){
+        sourceCtx.clearRect(0, 0, SW, SH);
+        // sourceCtx.drawImage(sourceImg, 0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel)
+        // let imgData = sourceCtx.getImageData(0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel);
+        sourceCtx.drawImage(sourceImg, sx, sy, swidth, sheight, x, y, width, height);
         sourceCtx.fillStyle = "rgba(0,0,0,0.6)"
         // sourceCtx.fillStyle = "blue"
         sourceCtx.fillRect(0, 0, (SW - setWidth) / 2, SH);
@@ -146,28 +131,12 @@ window.onload = function () {
         sourceCtx.fillRect((SW - setWidth) / 2, setHeight + (SH - setHeight) / 2, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
         // sourceCtx.fillStyle = "ORANGE"
         sourceCtx.fillRect(setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2, (SW - setWidth) / 2, setHeight);
-        console.log(sourceCanvas.height)
-    })
-    smallOpt.addEventListener('click', function () {
-        // if (pixcel < Math.round(SW / sourceImg.width * 100) / 100) {
-        //     return;
-        // }
-        pixcel--;
-        
-        if(pixcel)
-        sourceImgData = sourceImg;
-        sourceCtx.drawImage(sourceImg, 0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel)
-        let imgData = sourceCtx.getImageData(0, 0, sourceImg.width * pixcel, sourceImg.height * pixcel);
+    
 
-        sourceCtx.fillStyle = "rgba(0,0,0,0.6)"
-        // sourceCtx.fillStyle = "blue"
-        sourceCtx.fillRect(0, 0, (SW - setWidth) / 2, SH);
-        // sourceCtx.fillStyle = "yellow"
-        sourceCtx.fillRect((SW - setWidth) / 2, 0, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
-        // sourceCtx.fillStyle = "red"
-        sourceCtx.fillRect((SW - setWidth) / 2, setHeight + (SH - setHeight) / 2, setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2);
-        // sourceCtx.fillStyle = "ORANGE"
-        sourceCtx.fillRect(setWidth + (SW - setWidth) / 2, (SH - setHeight) / 2, (SW - setWidth) / 2, setHeight);
-        console.log(sourceCanvas.height)
-    })
+    }
+    function drawImageToEndCtx(x = (SW - setWidth) / 2, y = (SH - setHeight) / 2, width = setWidth, height = setHeight) {
+        endCtx.clearRect(0, 0, EW, EH);
+        endData = sourceCtx.getImageData(x, y, width, height);
+        endCtx.putImageData(endData, 0, 0)
+    }
 }

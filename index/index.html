@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>首页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/assets/waifu.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/libs/waifu.css" />
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="/assets/APlayer.min.css">
+    <link rel="stylesheet" href="/assets/libs/APlayer.min.css">
     <link rel="stylesheet" href="https://unpkg.com/dplayer@1.24.0/dist/DPlayer.min.css">
-     
+     <link rel="stylesheet" href="/assets/player/player.css">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     
 </head>
@@ -17,16 +17,37 @@
     <div class="hover-back"></div>
     <header>
         <ul class="menu">
-            <li>  主页</li>
-            <li>相册</li>
+            <li data-url="index">主页</li>
+            <li data-url="music">音乐</li>
             <li>说说</li>
             <li>日志</li>
-            <li><a href="/upload-img/index.html">项目</a></li>
+            <li data-url="project">项目</li>
         </ul>
+        
     </header>
-
-    <div id="aplayer"></div>
-    <div id="dplayer"></div>
+    <canvas id="menuCanvas" width=800 height=100 style="position: absolute;left:5vw;
+                top: 5vh;"></canvas>
+    <div class="indexplayer">
+        <div class="hover"><img src="/assets/img/test.jpeg" alt="" class="imghoverAni"></div>
+        <div class="info">
+            <audio src="/assets/mp3/金志文 - 那盏茶.mp3" controls></audio>
+        </div>
+    </div>
+    <div class="index page pageAni hide"  data-id = "index">
+        <iframe src="//player.bilibili.com/player.html?aid=6235951&cid=10305727&page=1" scrolling="no" border="0" frameborder="no"
+            framespacing="0" allowfullscreen="true" width="600" height="400"> </iframe>
+            <!-- <div id="dplayer"></div> -->
+    </div>
+    <div class="music page pageAni hide" data-id = "music">
+        <div id="mymusic"></div>
+    </div>
+    <div class="project page pageAni " data-id="project">
+        <ul class="project-list">
+            <li></li> 
+            <li>上传图片</li>
+            <li>上传图片</li>
+        </ul>
+    </div>
     <div class="waifu">
         <div class="waifu-tips"></div>
         <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
@@ -40,31 +61,92 @@
             <span class="fui-cross"></span>
         </div>
     </div>
-
+    
 
     
-    <script src="/assets/waifu-tips.js"></script>
-    <script src="/assets/live2d.js"></script>
-    <script type="text/javascript">initModel("/assets/")</script>
-    <script src="/assets/APlayer.min.js"></script>
+    <script src="/assets/libs/waifu-tips.js"></script>
+    <script src="/assets/libs/live2d.js"></script>
+    <script type="text/javascript">initModel("/assets/libs/")</script>
+    <script src="/assets/libs/APlayer.min.js"></script>
     <script src="https://unpkg.com/dplayer@1.24.0/dist/DPlayer.min.js"></script>
+    <script src="/assets/player/player.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script src="main.js"></script>
     
     <script  type="text/javascript">
-        const ap = new APlayer({
-            container: document.getElementById('aplayer'),
-            audio: [{
-                name: 'name',
-                artist: 'artist',
-                url: '',
-                cover: '/assets/video-hover.jpg'
-            }]
-        });
+        // let indexBack = new Back({
+        //     imgList:['/assets/img/back1.jpg', '/assets/img/back2.jpg'],
+        //     duration:1000,
+        // })
+
+
+
+
+        let menu = document.querySelector('.menu');
+        let page = document.querySelectorAll('.page')
+        menu.addEventListener('click',function(ev){
+            let e = ev || window.event;
+            let target = e.target || e.srcElement;
+            if(target.nodeName.toLowerCase() == 'li') {
+                let url = target.getAttribute('data-url');
+                page.forEach(function(value,index,arr){
+                    console.log(value)
+                    console.log(value.getAttribute('data-id'))
+                    if(value.getAttribute('data-id') !=url){
+                        // 淡出
+                        value.style.display = 'none';
+                    }
+                    else {
+                        // 出现
+                        // value.set
+                        value.style.display = 'block';
+                    }
+                    
+                })
+            }
+        },false)
+        const indexAudio = new MsPlayer({
+            container:document.querySelector('.indexplayer'),
+            audioObj:{
+                name: '那盏茶',
+                artist: '金志文',
+                url: '/assets/mp3/金志文 - 那盏茶.mp3',
+                cover: '/assets/mp3/cover.jpg',
+            }
+        })
+        const mymusiclist = new APlayer({
+                container: document.getElementById('mymusic'),
+                audio: [{
+                    name: '那盏茶',
+                    artist: '金志文',
+                    url: '/assets/mp3/金志文 - 那盏茶.mp3',
+                    cover: '/assets/mp3/cover1.jpg',
+                    theme: 'red'
+                }, {
+                    name: '燕归巢',
+                    artist: '许嵩',
+                    url: '/assets/mp3/许嵩 - 燕归巢.mp3',
+                    cover: '/assets/mp3/cover2.jpg',
+                    lrc: 'lrc1.lrc',
+                    theme: '#ebd0c2'
+                }],
+                
+                autoplay: false,
+                theme: '#FADFA3',
+                loop: 'all',
+                order: 'random',
+                preload: 'auto',
+                volume: 0.7,
+                mutex: true,
+                // listFolded: false,
+                // listMaxHeight: 90,
+                // lrcType: 3,
+            });
         const dp = new DPlayer({
             container: document.getElementById('dplayer'),
             screenshot: true,
             video: {
-                url: '',
+                url: '<iframe src="//player.bilibili.com/player.html?aid=6235951&cid=10305727&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>',
                 pic: '/assets/video-hover.jpg',
                 thumbnails: '/assets/video-hover.jpg'
             },
