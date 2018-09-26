@@ -50,7 +50,7 @@ window.onload = function () {
 
             sourceImg.src = e.target.result;
         }
-        sourceImg.onload = () => {
+        sourceImg.onload = (e) => {
             // sourceCanvas.width = sourceImg.width;
             // sourceCanvas.height = sourceImg.height;
             if(SW<SH){
