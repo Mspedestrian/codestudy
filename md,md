@@ -1,0 +1,198 @@
+常见移动端配置
+meta标签头部
+viewport的值content:
+
+user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height
+
+一、一些常规的CSS设置
+1、box-sizing注意有兼容性问题，需要设置前缀(-webkit-、-ms-、-o-)
+
+box-sizing: border-box;这个属性是设置CSS的盒子模型，简单介绍下，可以归为下面三种： 
+1.content-box: 默认值，可以使设置的宽度和高度值应用到元素的内容框。盒子的width只包含内容。即： 
+总宽度=margin+border+padding+width 
+2.border-box, 设置的width值其实是除margin外的border+padding+element的总宽度。盒子的width包含border+padding+内容。即： 
+总宽度=margin+width 
+3.inherit , 规定应从父元素继承 box-sizing 属性的值。 
+一般来说我们在取一个元素的宽度的时候，这个属性就会影响到所取元素的宽度，如果是 
+content-box，即默认值，那取到的宽度就只有元素的width，而设置成border-box的话取到的宽度就是width+border+padding。 
+注意：在不设置 元素宽度的时候，在表现上，content-box和border-box其实是一样的，但是当给元素设置宽度之后，在表现上就完全不一样了： 
+不设置宽高：
+<div class="content-box" style="padding: 50px;margin: 10px;background: blue;">
+    <div style="height: 20px;width: 50px;background: red;"></div>
+</div>
+<div class="border-box" style="padding: 50px;margin: 10px;background: green;">
+    <div style="height: 20px;width: 50px;background: red;"></div>
+</div>
+如下图所示
+
+Alt text
+
+设置宽高：
+
+<div class="content-box" style="width: 100px;height: 100px;padding: 50px;margin: 10px;background: blue;">
+     <div style="height: 20px;width: 50px;background: red;"></div>
+</div>
+<div class="border-box" style="width: 100px;height: 100px;padding: 50px;margin: 10px;background: green;">
+    <div style="height: 20px;width: 50px;background: red;"></div>
+</div>
+Alt text
+
+2、user-select注意有兼容性问题，需要设置前缀(-webkit-、-ms-、-o-)
+
+user-select，可以禁止在移动端长按选择功能，可以选值：none | text | all | element 
+注意设置了此属性user-select:none;在输入框中会导致无法获取焦点，所以如果有输入框，请将输入框的此属性不要设置为none
+3、-webkit-touch-callout防止IOS下长按菜单弹框
+
+比如IOS下WebView的图片上长按会出现复制/保存图片，设置此属性可以防止弹出系统菜单。
+可选值：none|default
+4、-webkit-tap-highlight-color：color当用户点击iOS的Safari浏览器中的链接或JavaScript的可点击的元素时，覆盖显示的高亮颜色。
+
+此属性对IOS和Android都有效，设置元素点击选中的颜色，如果要去掉系统自带的颜色效果，设置成rgba(0,0,0,0)即可，即设置成透明色
+5、-webkit-overflow-scrolling: touch;使用IOS的滚动效果
+
+IOS默认只对body做了滚动平滑效果，其他元素，如果设置了overflow: scroll;，滚动效果并不是平滑的，需要设置此属性才能生效。
+6、transform，设置变换属性，此属性的3d设置在Android4.4及以下版本不支持
+
+Android4.4及以下版本不支持transform: translate3d(60deg)，即使加了-webkit-前缀也是不支持的，需要改成transform: translate(60deg)
+7、appearance: none;在IOS下，input、textarea会默认有阴影效果
+
+即使设置了outline: none;和box-shadow: none;也无法去掉阴影效果，还需要加上appearance: none;这样就可以达到自己定义的效果，当然还有圆角border-radius: 0;
+8、IOS下输入框(input/textarea)无法自动聚焦问题，这是因为IOS默认需要用户操作才能聚焦
+
+可以通过点击某个按钮，然后在按钮的点击回调中手动调用input.focus()实现聚焦
+一定不要使用延时操作，如：setTimeout来进行延时，这样也会导致无法聚焦
+input输入框必须要在当前视图中，也即input必须是在屏幕的可见区域才行
+二、JS效果
+1、一段简单代码实现移动端的下拉刷新，或者弹动(bounce)效果
+
+$(document)
+.off('touchstart mousedown', '.bound-block')
+.on('touchstart mousedown', '.bound-block', function(){
+    //resistanceRatio 设置手势与位置变化的关系数
+    var y0 = 0, resistanceRatio = 0.9;
+    var x0 = 0;
+    // 保证下拉的时候，往上走会与滚动冲突，这个地方获取父元素的scrollTop 
+    var startScroll = document.body.scrollTop || 0;
+    var $this = $(this);
+    var deltaY = 0;
+    // 事件可以用在pc端，效果跟移动端一样，只是事件类型和属性值有差别
+    if(event.type == 'touchstart'){
+        y0 = event.touches[0].pageY;
+        x0 = event.touches[0].pageX;
+    }else{
+        y0 = event.y;
+        x0 = event.x;
+    }
+    $this.off('mousemove touchmove')
+    .on('touchmove mousemove', function(e){
+        // 水平方向的话就直接返回了，这里可以直接取消监听
+        if(this.direction === 'h'){
+            $this.off('mousemove touchmove');
+            return;
+        }
+        var y1 = 0, x1 = 0;
+        if(event.type == 'touchmove'){
+            y1 = event.touches[0].pageY;
+            x1 = event.touches[0].pageX;
+        }else{
+            y1 = event.y;
+            x1 = event.x;
+        }
+        var dy = y1 - y0, dx = x1 - x0;
+        // 阻止默认行为，此时不允许滚动。防止滚动与下拉冲突，同时可以很好的进行：
+        // “下拉刷新”，“释放刷新”这样的提示语
+        if(dy - startScroll > 0){
+            event.preventDefault();
+        }
+        // 横向则直接返回
+        if(Math.abs(dy) < Math.abs(dx)){
+            this.direction = 'h'; //这里也可以直接取消事件监听off
+            return;
+        }
+        //位置变化，实现一些阻力操作
+        deltaY = Math.pow(Math.abs(dy),resistanceRatio);
+
+        if(!vm.refreshing){
+            // 做一个提示语
+            if(deltaY < $refresher.height()){
+                vm.refreshingTxt = '下拉刷新';
+            }else{
+                vm.refreshingTxt = '释放刷新';
+            }
+        }else{
+            return;
+        }
+        if(dy < 0){
+
+            deltaY = - Math.pow(Math.abs(dy), resistanceRatio);
+            return
+        }
+        isMove = true;
+        // 设置变换，注意如果是要兼容Android4.4及以下，不要使用3d变换
+        $this.css({
+            'transform': 'translate(0, '+ deltaY +'px)',
+            '-webkit-transform': 'translate(0, '+ deltaY +'px)',
+            '-webkit-transition-duration': '0ms',
+            'transition-duration': '0ms'
+        })
+    });
+    // 释放的时候
+    $this.off('mouseup touchend')
+    .on('mouseup touchend', function(){
+        this.direction = 'v';
+        // 下拉高度满足的话就可以进行下拉刷新的请求，这里可以根据需要进行事件触发或者其他操作
+        if(isMove && startScroll < 1 && !vm.refreshing && deltaY >= $refresher.height()){
+            isMove = false;
+            // console.log('refreshing');
+            vm.refreshing = true;
+            vm.refreshingTxt = '正在加载';
+            vm.refresh();
+        }
+        // 正在刷新的话这个高度设置成下拉刷新的头部高度，$refresher就是下拉刷新头
+        if(vm.refreshing){
+            $this.css({
+                '-webkit-transform': 'translate(0, '+ $refresher.height() +'px)',
+                '-webkit-transition-duration': '300ms',
+                'transform': 'translate(0, '+ $refresher.height() +'px)',
+                'transition-duration': '300ms'
+            })
+            return;
+        }
+        // 300ms的变换时间，这样可以很好的过渡动画
+        $this.css({
+            '-webkit-transform': 'translate(0)',
+            '-webkit-transition-duration': '300ms',
+            'transform': 'translate(0)',
+            'transition-duration': '300ms'
+        })
+    });
+    // 如果是对当前的这个元素进行滚动并且下拉刷新，这个地方可以监听滚动事件，并注销touch事件
+    // 如果是此元素的父元素滚动，此元素只是进行位置变换，则下面的代码可以注释掉
+    $this.off('scroll')
+    .on('scroll', function (argument) {
+        $this.css({
+            '-webkit-transform': 'translate(0)',
+            '-webkit-transition-duration': '0ms',
+            'transform': 'translate(0)',
+            'transition-duration': '0ms'
+        });
+        $this.off('mouseup touchend');
+        $this.off('mousemove touchmove');
+    })
+})
+三、基于nuxt.js的Vue服务器渲染（SSR）方案踩坑
+1、nuxt.config.js配置文件
+
+build:vendor：数组内容如果有前后依赖关系，需要是按顺序引入，否则会出现变量不存在的问题
+build:extend：如果有改写webpack构建配置，或者重写了nuxt的默认构建配置，注意返回config对象，否则重写无效。nuxt会使用此config作为最终的配置。
+build:extend：注意这个配置是对服务器和客服端同时实用，某些配置如果是通用的，不要区分客服端和服务器，比如对图片的url-loader配置。可能会导致ssr的结果跟客服端的渲染结果不一致
+env：nuxt1.3默认把NODE_ENV给写死了，所以即使你申明了env:NODE_ENV还是会被覆盖掉，这样会导致，构建只允许development和production2个环境，在项目的其他地方使用process.env.NODE_ENV会出现错误。这种情况下，可以在env中使用私有的变量，反正最终都会注册到webpack.DefinePlugin的，这样就可以使用自己的process.env.VAR_NAME
+注意谨慎使用NODE_ENV，因为很多构建工具都会设置这个值，如果你的测试环境跟正式环境本身没有什么差别的话，你可以使用这个变量。但是如果是存在API接口差异或者域名差异，尽量使用自定义的变量，否则极有可能会导致变量被构建工具的默认值覆盖
+store返回的时候不要在export里面返回已经创建的store对象，而应该返回一个新的，不然会导致多人访问网站，拿到的store是一样的。注意Vue-SSR的生命周期和架构：
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+export default function() {
+    //在这里返回store，使用new
+    return new Vuex.Store({})
+}

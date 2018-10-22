@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>底部动画</title>
+    <style>
+        * {
+            margin:0;
+            padding: 0;
+        }
+        button {
+            border: none;
+            background: #aaa;
+        }
+        input,button,select,textarea{
+            /* 去掉点击样式 */
+            outline:none;
+        }
+
+        .container {
+            width:50%;
+            margin: 100px auto;
+            
+        }
+        .border1 {
+            position: relative;
+            cursor: pointer;
+            width: auto;
+            
+        }
+        .border1::before {
+            width: 100px;
+            height: 2px;
+            background: red;
+            content: '';
+            position: absolute;
+            bottom:-10px;
+            left:20px;
+            transform: scale(0);
+            transition: transform 1s;
+            transform-origin: right center;
+            
+
+        }
+        .border1:hover::before{
+            transform: scale(1);
+            transform-origin: left center;
+        }
+
+        /* 右侧固定，左侧自适应布局 */
+        .pageinput {
+            width:100%;
+            overflow: hidden;
+            clear: both;
+            margin-top: 30px;
+        }
+        .pageinput .right {
+            float: right;
+            width: 100px;
+            height: 30px;
+            background: #ff7800;
+            color:#fff;
+
+        }
+        .pageinput .left {
+            margin-right: 110px;
+            
+        }
+        /* .pageinput {
+            width:100%;
+            overflow: hidden;
+            clear: both;
+            margin-top: 30px;
+            display: table;
+        }
+        .pageinput .right {
+            display: table-cell;
+            width: 100px;
+            height: 30px;
+            color:#fff;
+
+        }
+        .pageinput .right button {
+            width: 100%;
+            background: #ff7800;
+        }
+        .pageinput .left {
+            display: table-cell;
+     
+            
+        } */
+        .pageinput .left input {
+            width: 100%;
+            height: 30px;
+            
+        }
+        .pageinput .left input::-webkit-input-placeholder {
+            color:#aaa;
+            font-size: 12px;
+        }
+        /* .input {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            display: flex;
+        }
+        .input input {
+            
+            height: 30px;
+            flex:1;
+            background: #aaa;
+          
+            
+        }
+        .input button{
+            float: right;
+            width: 100px;
+            background: #ff7800;
+            height: 30px;
+            border: none;
+            
+        } */
+        /* .page1 {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        .page1 .sidebar {
+            float: right;
+            width: 100px;
+            background: #aaa;
+            height: 50px;
+        }
+        .page1 .content {
+            margin-right: 110px;
+            background: #ff7800;
+            height: 100px;
+        } */
+        .page1 {
+            width: 100%;
+            height: auto;
+            margin-top: 30px;
+            display: table;
+        }
+        .page1 .sidebar {
+            display: table-cell;
+            width: 100px;
+            background: #aaa;
+            height: 50px;
+        }
+        .page1 .content {
+            display: table-cell;
+            background: #ff7800;
+            height: 100px;
+        }
+        /* .page1 {
+            width: 100%;
+            height: auto;
+            margin-top: 30px;
+            position: relative;
+        }
+        .page1 .sidebar {
+            
+            width: 100px;
+            background: #aaa;
+            height: 50px;
+            position: absolute;
+            right:0;
+            top:0;
+            height: 100px;
+        }
+        .page1 .content {
+            margin-right: 110px;
+            background: #ff7800;
+            height: 100px;
+        } */
+        /* .page1 {
+            width: 100%;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page1 .sidebar {
+            
+            width: 100px;
+            background: #aaa;
+            height: 100px;
+            float: right;
+            
+        }
+        .page1 .content {
+            width: 100%;
+            margin-left: -110px;
+            float:left;
+            height: 100px;
+        }
+        .page1 .content .content1 {
+            background: #ff7800;
+            height: 100px;
+            margin-left: 110px;
+        } */
+        /* 右侧固定，左侧自适应布局结束 */
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+
+        </div>
+        <div class="border1">鼠标放上来就会看到效果哦</div>
+        <div class="pageinput">
+            <div class="right"><button class="right">我是一个按钮</button></div>
+            <div class="left"><input type="text" placeholder="哈哈哈哈"></div>
+                   
+        </div>
+        <div class="page1">
+            <div class="content">
+                <div class="content1">1111</div>
+            </div>
+            <div class="sidebar"></div>
+        </div>
+        
+        
+    </div> 
+</body>
+</html>
