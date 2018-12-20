@@ -1,0 +1,99 @@
+.tree {
+    width: 2.71rem;
+    height: 4.24rem;
+    background-image: url(http://img.mukewang.com/565d07d30001c97605420424.png);
+    background-size: 200% 100%;
+    /* background-position: -200% 100%; */
+    position: absolute;
+    bottom:0;
+    animation: treeAni 1s infinite steps(2) forwards;
+}
+@keyframes treeAni {
+    from {
+        background-position: 0% 100%
+    }
+    to {
+        background-position: -200% 100%;
+    }
+}
+.moon {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 100%;
+    background: #ffeeba;
+    position: absolute;
+    top:0.1rem;
+    left:3rem;
+    box-shadow:0 0 1.5rem #ffeeba; 
+    animation: moonAni 3s infinite linear;
+}
+@keyframes moonAni {
+    0% {
+        box-shadow:0 0 0 transparent; 
+    }
+    50% {
+        box-shadow:0 0 1rem #ffeeba; 
+    }
+    100% {
+        box-shadow:0 0 0 transparent; 
+    }
+}
+.cloudy {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background: #5d758f;
+    position: absolute;
+    top:1.2rem;
+    left:0.3rem;
+    box-shadow: 0.8rem -0.4rem 0 0rem #5d758f,
+    1.4rem -0.3rem 0 -0.1rem #5d758f,
+    0.7rem 0.4rem 0 0rem #5d758f,
+    1.5rem 0.4rem 0 -0.2rem #5d758f;
+    animation: cloudyAni 5s linear infinite;
+}
+@keyframes cloudyAni {
+    50% {
+        top:1.8rem;
+    }
+}
+
+.chs-boy {
+    height: 1.08rem;
+    width: 2.99rem;
+    background: url(http://img.mukewang.com/565d07490001365329660269.png);
+    background-size: 400% 100%;
+    position: absolute;
+    right:-1rem;
+    top:1rem;
+    transform: scale(0.1)
+}
+.chs-boy-deer {
+    animation: chsBoyDeer 3s steps(3,end) infinite;
+}
+@keyframes chsBoyDeer {
+    0% {
+
+    }
+    25% {
+        background-position: 100% 100%;
+    }
+    50% {
+        background-position: 200% 100%;
+    }
+    75% {
+        background-position: 300% 100%;
+    }
+    100% {
+        background-position: 400% 100%;
+    }
+}
+.chs-boy-pause {
+    animation-play-state: paused;
+}
+
+.xingxing {
+    position: absolute;
+    bottom:4.24rem;
+    border:1px solid red;
+}

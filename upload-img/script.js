@@ -32,8 +32,6 @@ window.onload = function(){
             sourceImg.src = e.target.result;
         }
         sourceImg.onload = ()=>{
-            // sourceCanvas.width = sourceImg.width;
-            // sourceCanvas.height = sourceImg.height;
             pixcel = Math.round(SW / sourceImg.width*100)/100;
             console.log(pixcel)
             sourceImgData = sourceImg;
@@ -69,11 +67,7 @@ window.onload = function(){
             sourceCtx.fillRect(e.layerX, startY, sourceCanvas.width - e.layerX, e.layerY - startY);
             
 
-            // ctx.font = "20px Georgia #fff";
-            // ctx.fillText("举行1", e.layerX / 2, sourceCanvas.height/2);
-            // ctx.fillText("举行2", (sourceCanvas.width-e.layerX / 2), sourceCanvas.height / 2);
-            // ctx.fillText("举行3", e.layerX / 2, sourceCanvas.height / 2);
-            // ctx.fillText("举行4", e.layerX / 2, sourceCanvas.height / 2);
+            
 
 
             sourceCtx.strokeRect(startX, startY, width, height);
@@ -85,6 +79,7 @@ window.onload = function(){
         endCtx.clearRect(0, 0, endCanvas.width, endCanvas.height);
         let endData = sourceCtx.getImageData(startX, startY, e.layerX - startX, e.layerY - startY);
         endCtx.putImageData(endData,0,0)
+        drawImageToEndCtx(endCanvas, sourceCtx, endCtx, startX, startY, e.layerX - startX, e.layerY - startY)
     })
 
     uploadBtn.addEventListener('click',function(){
@@ -93,4 +88,9 @@ window.onload = function(){
         // endCtx.getImageData(0,0,EW,EH)
         let baseData = endCanvas.toDataURL()
     })
+}
+function drawImageToEndCtx(endCanvas,sourceCtx, endCtx,x,y,width,height){
+    endCtx.clearRect(0, 0, endCanvas.width, endCanvas.height);
+    let endData = sourceCtx.getImageData(startX, startY, e.layerX - startX, e.layerY - startY);
+    endCtx.putImageData(endData, 0, 0)
 }

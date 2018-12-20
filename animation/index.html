@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="page/pagea.css">
+    <link rel="stylesheet" href="page/pageb.css">
+    <link rel="stylesheet" href="page/pagec.css">
+    <title>Document</title>
+</head>
+<body>
+    <section class="container">
+        <section class="pagea bg-adaptive">
+            <figure class="tree"></figure>
+            <figure class="moon"></figure>
+            <figure class="cloudy"></figure>
+            <div class="chs-boy chs-boy-deer"></div>
+            <!-- <svg viewBox="0 0 1000 800">
+                <polygon points="256.814,12.705 317.205,198.566 512.631,198.566 354.529,313.435 414.918,499.295 256.814,384.427 98.713"></polygon>
+            </svg> -->
+            <!-- 星星2 -->
+            <!-- <svg viewBox="0 0 1000 800">
+                <polygon points="256.814,12.705 317.205,198.566 512.631,198.566 354.529,313.435 414.918,499.295 256.814,384.427 98.713,499.295 159.102,313.435 1,198.566 196.426,198.566 "></polygon>
+            </svg> -->
+            <!-- 星星3 -->
+            <svg viewBox="-150 -1280 5000 3000">
+                <defs>
+                    <linearGradient id="star" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#FCF0BC"></stop>
+                        <stop offset="0%" stop-color="#FCF0BC"></stop>
+                    </linearGradient>
+                </defs>
+                <!-- <polygon style="fill: url(#star);" points="256.814,12.705 317.205,198.566 512.631,198.566 354.529,313.435 414.918,499.295 256.814,384.427 98.713,499.295 159.102,313.435 1,198.566 196.426,198.566 "></polygon> -->
+                <polygon style="fill: url(#star);" points="256.814,12.705 317.205,198.566 512.631,198.566 354.529,313.435 414.918,499.295 256.814,384.427 98.713,499.295 159.102,313.435 1,198.566 196.426,198.566 "></polygon>
+            </svg>
+            
+        </section>
+        <section class="pageb bg-adaptive"></section>
+        <section class="pagec bg-adaptive"></section>
+    </section>
+    <select name="" id="page">
+        <option value="pagea">pagea</option>
+        <option value="pageb">pageb</option>
+        <option value="pagec">pagec</option>
+    </select>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="./page/jquery.transit.js"></script>
+    <script src="observer.js"></script>
+    <script src="page/pagea.js"></script>
+    <script src="page/pageb.js"></script>
+    <script src="page/pagec.js"></script>
+    <script src="middle.js"></script>
+    <script>
+        var doc = document;
+        var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            //自适应设置容器高度
+            var container = document.querySelector(".container")
+            //原始比例
+            var proportion = 900 / 1440;
+            container.style.height = container.clientWidth * proportion + "px";
+            docEl.style.fontSize = 20*(docEl.clientWidth/320)+'px'
+            document.body.style.height = docEl.clientWidth * proportion + "px";
+        };
+        window.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    </script>
+</body>
+</html>
